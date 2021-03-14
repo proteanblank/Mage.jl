@@ -1,5 +1,5 @@
 # Mage.jl
-Mage.jl is a WIP Magic card game using simulation engine written in pure Julia. 
+Mage.jl is a WIP Magic card game simulation engine written in pure Julia. 
 
 **Features**
 - EDH (Commander) support
