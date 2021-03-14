@@ -3,13 +3,13 @@ Mage.jl is a WIP Magic card game simulation engine written in pure Julia.
 
 **Features**
 - EDH (Commander) support
-- Deck Builder
-- Seam carving for custom card images
+- EDH deck builder
+- Seam carving for mini card images
 - GIFs as custom cards
 - Basic resource counter
 - Game zone card counter
-- Custom animations
-- All Magic sets as of 
+- Custom animation support
+- All Magic sets as of 10/03/2020
 
 __Known issues__
 - No audio on linux
