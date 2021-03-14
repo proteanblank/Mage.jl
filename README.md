@@ -9,7 +9,7 @@ Mage.jl is a WIP Magic card game simulation engine written in pure Julia.
 - Basic resource counter
 - Game zone card counter
 - Custom animations
-
+- All Magic sets as of 
 
 __Known issues__
 - No audio on linux
@@ -20,3 +20,5 @@ __Future goals__
 - Multiplayer support
 - Rules enforcement
 - Other Magic formats
+- Draft mode
+- AI opponents
