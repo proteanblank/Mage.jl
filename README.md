@@ -18,4 +18,5 @@ __Known issues__
 
 __Future goals__
 - Multiplayer support
-- Rules enforcement 
+- Rules enforcement
+- Other Magic formats
