@@ -16,7 +16,6 @@ __Known issues__
 - EDH support only
 
 
-__Project goals__
+__Future goals__
 - Multiplayer support
-- Game rules enforcement
-- and much more! 
+- Rules enforcement 
