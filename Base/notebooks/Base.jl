@@ -33,19 +33,22 @@ begin
 	game_include("$pd/Base/notebooks/game_rules.jl")
 
 	md"""
-	### COMMON MtG FUNCS
+	### Common Mage.jl funcs
 	"""
 end
 
 # ╔═╡ 409648d8-468e-11eb-2856-5bda6584cf79
 function zone_check(a::Actor, gs::Dict)
-    for zone in keys(gs[:zone])
-        if SDL2.HasIntersection(
+
+	for zone in keys(gs[:zone])
+
+		if SDL2.HasIntersection(
             Ref(SDL2.Rect(Int32[
 				ceil(a.x + a.w * a.scale[1] / 2),
 				ceil(a.y + a.h * a.scale[2] / 2), 1, 1]...)), # intersection determined from top-left most pixel
             Ref(gs[:stage][zone].position))
-            return zone
+
+			return zone
         end
     end
 
@@ -67,7 +70,6 @@ function reset_stage!(gs::Dict)
     SCREEN_WIDTH = gs[:SCREEN_WIDTH]
     SCREEN_HEIGHT = gs[:SCREEN_HEIGHT]
     SCREEN_BORDER = gs[:SCREEN_BORDER]
-
 
     for k in keys(gs[:zone])
         gs[:zone][k] = []
@@ -142,7 +144,7 @@ function reset_stage!(gs::Dict)
 	push!(gs[:group][:clickables], [ d.faces[begin] for d in gs[:overlay][:dice] ]...)
 	push!(gs[:group][:clickables], [ c.faces[begin] for c in gs[:overlay][:counters] ]...)
 
-	return gs
+	gs
 end
 
 # ╔═╡ 47f50362-468e-11eb-211d-f561273a906c
@@ -253,7 +255,7 @@ function add_texts!(gs::Dict)
 
     gs[:resource_spinners][:life].data[:value] = 40
     reverse(gs[:group][:clickables])
-    return gs
+    gs
 end
 
 # ╔═╡ 7ef01b58-523d-11eb-0c16-2b1d02dd1836
@@ -277,13 +279,15 @@ function in_bounds(gs::Dict, as=Actor[])
             push!(as, a)
         end
     end
-    return as
+
+	return as
 end
 
 # ╔═╡ 4cbb84f2-468e-11eb-09af-718f893c0449
 function on_mouse_down(g::Game, pos::Tuple, button::GameZero.MouseButtons.MouseButton)
     global gs
     ib = in_bounds(gs)
+	@show length(ib)
 
     if button == GameZero.MouseButtons.LEFT
 
@@ -303,16 +307,18 @@ function on_mouse_down(g::Game, pos::Tuple, button::GameZero.MouseButtons.MouseB
         elseif !isempty(ib)
 
             if g.keyboard.LSHIFT || g.keyboard.RSHIFT
-                play_sound("Base/sounds/select.wav")
-                ib[end].scale = [1.02,1.02]
+                # play_sound("Base/sounds/select.wav")
+                ib[end].scale = [1.02, 1.02]
                 push!(gs[:group][:selected], ib[end])
 
                 for a in gs[:group][:selected]
-                    a.data[:mouse_offset] = [ a.x - gs[:MOUSE_POS][1], a.y - gs[:MOUSE_POS][2] ]
+                    a.data[:mouse_offset] = [
+						a.x - gs[:MOUSE_POS][1], a.y - gs[:MOUSE_POS][2] ]
                 end
 
-            elseif ib[end] === gs[:zone]["Library"][end].faces[begin] &&
-					length(gs[:zone]["Library"]) > 0 # pull card from top of deck into hand & selected if any cards left in library
+			# pull card from top of deck into hand & selected if any cards left in library
+			elseif ib[end] === gs[:zone]["Library"][end].faces[begin] &&
+				length(gs[:zone]["Library"]) > 0
 
 				c = pop!(gs[:zone]["Library"])
 				c.faces = circshift(c.faces, 1)
@@ -329,7 +335,8 @@ function on_mouse_down(g::Game, pos::Tuple, button::GameZero.MouseButtons.MouseB
 				push!(gs[:group][:clickables], gs[:zone]["Library"][end].faces[begin])
 
             elseif ib[end] in values(gs[:overlay][:dice])
-                if g.keyboard.LCTRL || g.keyboard.RCTRL
+
+				if g.keyboard.LCTRL || g.keyboard.RCTRL
                     push!(gs[:group][:selected], ib[end])
 
                 else
@@ -340,13 +347,13 @@ function on_mouse_down(g::Game, pos::Tuple, button::GameZero.MouseButtons.MouseB
                 end
 
             elseif isempty(gs[:group][:selected]) && !(ib[end] in values(gs[:resource_spinners]))
+                # play_sound("Base/sounds/select.wav")
 
-                play_sound("Base/sounds/select.wav")
+				ib[end].scale=[1.02, 1.02]
+                @show zs = zone_check(ib[end], gs)
 
-                ib[end].scale=[1.02, 1.02]
-                zs = zone_check(ib[end], gs)
-
-                dice_and_counters = [ dc.faces[begin] for dc in [   # "sticky" counters
+				# "sticky" counters
+                dice_and_counters = [ dc.faces[begin] for dc in [
 					values(gs[:overlay][:dice])...,
 					values(gs[:overlay][:dice])...
 					] if SDL2.HasIntersection(
@@ -362,7 +369,7 @@ function on_mouse_down(g::Game, pos::Tuple, button::GameZero.MouseButtons.MouseB
 						dc.x - gs[:MOUSE_POS][1], dc.y - gs[:MOUSE_POS][2] ]
                 end
 
-                push!(gs[:group][:selected], [ ib[end] ]..., dice_and_counters... )
+                push!(gs[:group][:selected], [ ib[end] ]...) #, dice_and_counters... )
 
                 if zs !== nothing
                     filter!(x->x!==ib[end], gs[:zone][zs])
@@ -374,8 +381,10 @@ function on_mouse_down(g::Game, pos::Tuple, button::GameZero.MouseButtons.MouseB
         end
 
     elseif button == GameZero.MouseButtons.RIGHT
-        if !isempty(gs[:group][:selected])
-            for a in gs[:group][:selected]
+
+		if !isempty(gs[:group][:selected])
+
+			for a in gs[:group][:selected]
                 a.angle = a.angle == 0 ? g.keyboard.LALT ? 270 : 90 : 0
             end
 
@@ -405,13 +414,15 @@ function on_mouse_down(g::Game, pos::Tuple, button::GameZero.MouseButtons.MouseB
 	            else
 					for (i,c) in enumerate(gs[:zone]["Library"])
 						a = c.faces[begin]
-	                    if SDL2.HasIntersection(Ref(a.position), Ref(gs[:stage]["Hand"].position))
+
+						if SDL2.HasIntersection(Ref(a.position), Ref(gs[:stage]["Hand"].position))
 	                        c = popat!(gs[:zone]["Library"], i)
 							push!(gs[:zone]["Hand"], c)
 	                    end
 	                end
 
 					for c in gs[:zone]["Library"]
+
 						while c.faces[begin].label != "Backside"
 							c.faces = circshift(c.faces, 1)
 						end
@@ -449,6 +460,7 @@ function on_mouse_down(g::Game, pos::Tuple, button::GameZero.MouseButtons.MouseB
 			else
             	ib[end].angle = ib[end].angle == 0 ? 90 : 0
             end
+
 		elseif isempty(ib)
 			gs[:group][:selected] = []
 		end
@@ -469,8 +481,8 @@ function on_mouse_up(g::Game, pos::Tuple, button::GameZero.MouseButtons.MouseBut
 
                 pos = if a.angle == 90 || a.angle == 270  # corrects for sideways rot abt center
                     SDL2.Rect(
-                        ceil(a.x - (a.scale[2] * a.h - a.scale[1] * a.w) / 2),
-                        ceil(a.y + (a.scale[2] * a.h - a.scale[1] * a.w) / 2),
+                        ceil(Int32, a.x - (a.scale[2] * a.h - a.scale[1] * a.w) / 2),
+                        ceil(Int32, a.y + (a.scale[2] * a.h - a.scale[1] * a.w) / 2),
                         a.h,
                         a.w,
                     )
@@ -505,7 +517,7 @@ function on_mouse_up(g::Game, pos::Tuple, button::GameZero.MouseButtons.MouseBut
                     a.data[:mouse_offset] = [ a.x - gs[:MOUSE_POS][1], a.y - gs[:MOUSE_POS][2] ]
                 end
 
-				play_sound("Base/sounds/select.wav")
+				# play_sound("Base/sounds/select.wav")
             end
 
         elseif !isempty(gs[:group][:selected]) && !(g.keyboard.LSHIFT || g.keyboard.RSHIFT)
@@ -537,10 +549,8 @@ function on_mouse_up(g::Game, pos::Tuple, button::GameZero.MouseButtons.MouseBut
 		                "Battlefield: $(length(gs[:zone]["Battlefield"]))")
 
 					filter!(x->x!==a, gs[:group][:clickables])
-
 					a.x = round_to(30, a.x)  # snap in x
 					a.y = round_to(30, a.y)  # snap in y
-
 					a.scale = [1, 1]
 
 				else
@@ -779,7 +789,7 @@ end
 
 # ╔═╡ 70d25e54-468e-11eb-160f-9bdafa1ee16c
 begin
-	round_to(n, x) = round(Int, x / n) * n
+	round_to(n, x) = round(Int32, x / n) * n
 	draw(x::Card) = draw(x.faces[begin])
 	draw(x::Dice) = draw(x.faces[begin])
 	draw(x::Counter) = draw(x.faces[begin])
@@ -788,6 +798,8 @@ begin
 
 	#SDL2.SetWindowFullscreen(game[].screen.window, SDL2.WINDOW_FULLSCREEN_DESKTOP)
 	SDL2.ShowCursor(Int32(0))  # hides system mouse cursor
+
+	finalizer(kill_actor!, Actor)
 end
 
 # ╔═╡ Cell order:
