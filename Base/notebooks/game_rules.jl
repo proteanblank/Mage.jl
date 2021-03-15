@@ -27,9 +27,7 @@ end;
 begin
 	@quickactivate
 
-	using SimpleDirectMediaLayer
-	using DataStructures
-	using GameZero
+	using PlaymatSimulator
 
 	md"""
 	## GAME RULES (INACTIVE)
@@ -149,7 +147,7 @@ mutable struct PlaymatSimulatorGame
 end
 
 # ╔═╡ a938ca5c-393a-11eb-0557-d1580caa7d9d
-gr = OrderedDict(
+gr = Dict(
     :turn_order => [:untap, :upkeep, :draw, :main_phase_one, :declare_attackers, :declare_blockers, :main_phase_two, :end_phase ],
 	:win_conditions => [ :all_opponents_lost, :no_opponents_left ],
 	:loss_conditions => [ :zero_health, :cant_draw, :poisoned, :commander_dmg ],

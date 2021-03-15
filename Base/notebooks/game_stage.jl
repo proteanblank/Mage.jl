@@ -12,16 +12,14 @@ begin
     @quickactivate
 
     using Colors
-	using ImageIO
-    using DataStructures
+	using PlaymatSimulator
 
 	import PlaymatSimulator.Actors.Image
 
-	US = deserialize("$(projectdir())/tmp/user_selection.jls")
-	GAME_DIR = US[:GAME_DIR]
+	pd = projectdir()
 
-	PS = ingredients("$(projectdir())/src/PlaymatSimulator.jl")
-	GS = ingredients("$GAME_DIR/../Base/notebooks/game_settings.jl")
+	US = deserialize("$pd/tmp/user_selection.jls")
+	GS = ingredients("$pd/Base/notebooks/game_settings.jl")
 
 	SCREEN_WIDTH = GS.SCREEN_WIDTH
 	SCREEN_HEIGHT = GS.SCREEN_HEIGHT
@@ -35,19 +33,19 @@ begin
 end
 
 # ╔═╡ fdf59b16-4da2-11eb-204f-0d0e1a522f6c
-SHADE_PATH = "$GAME_DIR/../Base/ui/zones/area_blk.png"
+SHADE_PATH = "$pd/Base/ui/zones/area_blk.png"
 
 # ╔═╡ a2195ae4-4da2-11eb-2112-e54a53878565
 zone_shade = load(SHADE_PATH)
 
 # ╔═╡ 235edb4c-38fe-11eb-3112-bde291f6f5b5
 begin
-	dice_faces = [ load("$GAME_DIR/../Base/ui/dice/$fn") for fn in
-		readdir("$GAME_DIR/../Base/ui/dice") if occursin("gif", fn) ]
+	dice_faces = [ load("$pd/Base/ui/dice/$fn") for fn in
+		readdir("$pd/Base/ui/dice") if occursin("gif", fn) ]
 
-	serialize("$GAME_DIR/../Base/ui/dice/dice_faces.jls", dice_faces)
+	serialize("$pd/Base/ui/dice/dice_faces.jls", dice_faces)
 
-	dfs = deserialize("$GAME_DIR/../Base/ui/dice/dice_faces.jls")
+	dfs = deserialize("$pd/Base/ui/dice/dice_faces.jls")
 
 	function create_die(dfs; id="die_$(randstring(5))", x=0, y=0)
 		d = Dice(id,
@@ -66,7 +64,7 @@ begin
 
 	function create_glass_counter(id="ctr_$(randstring(5))"; x=0, y=0)
 		c = Counter("ctr_$(randstring(5))",
-			[ GIF("ctrface_$(randstring(5))", load("$GAME_DIR/../Base/ui/counters/glass.gif")) ],
+			[ GIF("ctrface_$(randstring(5))", load("$pd/Base/ui/counters/glass.gif")) ],
 			nothing,
 			)
 		c.faces[begin].data[:parent_id] = id

@@ -16,9 +16,7 @@ begin
 	using Colors
 	using Random
 	using Serialization
-	using DataStructures
 	using PlaymatSimulator
-    using SimpleDirectMediaLayer
 
     import PlaymatSimulator.Actors.Text
 	import PlaymatSimulator.Actors.Image
@@ -27,10 +25,12 @@ begin
 	const AN = PlaymatSimulator.Animations
 	const SDL2 = SimpleDirectMediaLayer
 
-	USER_SETTINGS = deserialize("$(projectdir())/tmp/user_selection.jls")
-	GAME_DIR = USER_SETTINGS[:GAME_DIR]
+	pd = projectdir()
 
-	game_include("game_rules.jl")
+	USER_SETTINGS = deserialize("$pd/tmp/user_selection.jls")
+	GAME_NAME = USER_SETTINGS[:GAME_NAME]
+
+	game_include("$pd/Base/notebooks/game_rules.jl")
 
 	md"""
 	### COMMON MtG FUNCS
@@ -42,8 +42,8 @@ function zone_check(a::Actor, gs::Dict)
     for zone in keys(gs[:zone])
         if SDL2.HasIntersection(
             Ref(SDL2.Rect(Int32[
-				ceil(a.x + a.w * a.scale[1]/2),
-				ceil(a.y + a.h * a.scale[2]/2), 1, 1]...)), # intersection determined from top-left most pixel
+				ceil(a.x + a.w * a.scale[1] / 2),
+				ceil(a.y + a.h * a.scale[2] / 2), 1, 1]...)), # intersection determined from top-left most pixel
             Ref(gs[:stage][zone].position))
             return zone
         end
@@ -63,12 +63,11 @@ end
 # ╔═╡ 799c2578-4cb3-11eb-1af7-b1ab01270e6d
 function reset_stage!(gs::Dict)
     GAME_NAME = gs[:GAME_NAME]
-    GAME_DIR = gs[:GAME_DIR]
     DECK_NAME = gs[:DECK_NAME]
     SCREEN_WIDTH = gs[:SCREEN_WIDTH]
     SCREEN_HEIGHT = gs[:SCREEN_HEIGHT]
     SCREEN_BORDER = gs[:SCREEN_BORDER]
-	DECK_DIR = "$GAME_DIR/../$GAME_NAME/decks/$DECK_NAME"
+
 
     for k in keys(gs[:zone])
         gs[:zone][k] = []
@@ -78,7 +77,7 @@ function reset_stage!(gs::Dict)
         gs[:group][k] = []
     end
 
-    deck = deserialize("$DECK_DIR/$DECK_NAME.jls")
+    deck = deserialize("$pd/$GAME_NAME/decks/$DECK_NAME/$DECK_NAME.jls")
 
 	gs[:CARDS] = []
 
@@ -186,41 +185,40 @@ function add_texts!(gs::Dict)
     SCREEN_WIDTH = gs[:SCREEN_WIDTH]
     SCREEN_HEIGHT = gs[:SCREEN_HEIGHT]
     SCREEN_BORDER = gs[:SCREEN_BORDER]
-    GAME_DIR = gs[:GAME_DIR]
 
 	gs[:texts] = Dict{Symbol,Actor}()
     gs[:texts][:deck_info] = Text("Library: $(length(gs[:zone]["Library"]))",
-        "$GAME_DIR/../Base/fonts/OpenSans-Regular.ttf",
+        "Base/fonts/OpenSans-Regular.ttf",
         x=2SCREEN_BORDER,
         y=SCREEN_HEIGHT - 4SCREEN_BORDER,
         pt_size=22,
         )
     gs[:texts][:hand_info] = Text("Hand: $(length(gs[:zone]["Hand"]))",
-        "$GAME_DIR/../Base/fonts/OpenSans-Regular.ttf",
+        "Base/fonts/OpenSans-Regular.ttf",
         x=2SCREEN_BORDER,
         y=gs[:stage]["Hand"].h - 2SCREEN_BORDER,
         pt_size=22,
         )
     gs[:texts][:battlefield_info] = Text("Battlefield: $(length(gs[:zone]["Battlefield"]))",
-        "$GAME_DIR/../Base/fonts/OpenSans-Regular.ttf",
+        "Base/fonts/OpenSans-Regular.ttf",
         x=gs[:stage]["Hand"].w + 10SCREEN_BORDER,
         y=SCREEN_HEIGHT - 4SCREEN_BORDER,
         pt_size=22,
         )
     gs[:texts][:command_info] = Text("Command / Exile: $(length(gs[:zone]["Command"]))",
-        "$GAME_DIR/../Base/fonts/OpenSans-Regular.ttf",
+        "Base/fonts/OpenSans-Regular.ttf",
         x=gs[:stage]["Command"].x + SCREEN_BORDER,
         y=gs[:stage]["Command"].h - 2SCREEN_BORDER,
         pt_size=22,
         )
     gs[:texts][:graveyard_info] = Text("Graveyard: $(length(gs[:zone]["Graveyard"]))",
-        "$GAME_DIR/../Base/fonts/OpenSans-Regular.ttf",
+        "Base/fonts/OpenSans-Regular.ttf",
         x=gs[:stage]["Graveyard"].x + SCREEN_BORDER,
         y=SCREEN_HEIGHT - 4SCREEN_BORDER,
         pt_size=22,
         )
     gs[:texts][:welcome_text] = Text("PlaymatSimulator",
-        "$GAME_DIR/../Base/fonts/OpenSans-Regular.ttf",
+        "Base/fonts/OpenSans-Regular.ttf",
         x=ceil(Int32, SCREEN_WIDTH * 0.3),
         y=ceil(Int32, SCREEN_HEIGHT * 0.5),
         pt_size=85,
@@ -286,7 +284,6 @@ end
 function on_mouse_down(g::Game, pos::Tuple, button::GameZero.MouseButtons.MouseButton)
     global gs
     ib = in_bounds(gs)
-	GAME_DIR = USER_SETTINGS[:GAME_DIR]
 
     if button == GameZero.MouseButtons.LEFT
 
@@ -306,7 +303,7 @@ function on_mouse_down(g::Game, pos::Tuple, button::GameZero.MouseButtons.MouseB
         elseif !isempty(ib)
 
             if g.keyboard.LSHIFT || g.keyboard.RSHIFT
-                play_sound("$GAME_DIR/../Base/sounds/select.wav")
+                play_sound("Base/sounds/select.wav")
                 ib[end].scale = [1.02,1.02]
                 push!(gs[:group][:selected], ib[end])
 
@@ -344,7 +341,7 @@ function on_mouse_down(g::Game, pos::Tuple, button::GameZero.MouseButtons.MouseB
 
             elseif isempty(gs[:group][:selected]) && !(ib[end] in values(gs[:resource_spinners]))
 
-                play_sound("$GAME_DIR/../Base/sounds/select.wav")
+                play_sound("Base/sounds/select.wav")
 
                 ib[end].scale=[1.02, 1.02]
                 zs = zone_check(ib[end], gs)
@@ -462,7 +459,6 @@ end
 function on_mouse_up(g::Game, pos::Tuple, button::GameZero.MouseButtons.MouseButton)
     global gs
     ib = in_bounds(gs)
-	GAME_DIR = projectdir() * "games/MtG/Base.jl"
 
     if button == GameZero.MouseButtons.LEFT
 
@@ -509,7 +505,7 @@ function on_mouse_up(g::Game, pos::Tuple, button::GameZero.MouseButtons.MouseBut
                     a.data[:mouse_offset] = [ a.x - gs[:MOUSE_POS][1], a.y - gs[:MOUSE_POS][2] ]
                 end
 
-				play_sound("$GAME_DIR/sounds/select.wav")
+				play_sound("Base/sounds/select.wav")
             end
 
         elseif !isempty(gs[:group][:selected]) && !(g.keyboard.LSHIFT || g.keyboard.RSHIFT)
@@ -669,10 +665,10 @@ function on_key_down(g::Game, key, keymod)
     elseif key == Keys.DELETE
         if !isempty(gs[:group][:selected])
             kill_card!.(gs[:group][:selected])
-            play_sound("$GAME_DIR/sounds/wilhelm.mp3")
+            play_sound("Base/sounds/wilhelm.mp3")
         elseif !isempty(ib)
             kill_card!(ib[end])
-            play_sound("$GAME_DIR/sounds/wilhelm.mp3")
+            play_sound("Base/sounds/wilhelm.mp3")
         end
 
     elseif key == Keys.TAB
@@ -742,13 +738,13 @@ function on_key_down(g::Game, key, keymod)
                 )
             end
         end
-        play_sound("$GAME_DIR/sounds/splay_actors.mp3")
+        play_sound("Base/sounds/splay_actors.mp3")
 
     elseif key == Keys.BACKQUOTE
         try
-            if "terminal.jls" in readdir(projectdir())
-                @show eval(g.game_module, Meta.parse(deserialize(projectdir() * "/terminal.jls")))
-                rm(projectdir() * "/terminal.jls")
+            if "terminal.jls" in readdir("tmp")
+                @show eval(g.game_module, Meta.parse(deserialize("tmp/terminal.jls")))
+                rm("tmp/terminal.jls")
             end
         catch e
             @warn e
@@ -791,6 +787,7 @@ begin
 	#play_music(gs[:music][end], 1)  # play_music(name, loops=-1)
 
 	#SDL2.SetWindowFullscreen(game[].screen.window, SDL2.WINDOW_FULLSCREEN_DESKTOP)
+	SDL2.ShowCursor(Int32(0))  # hides system mouse cursor
 end
 
 # ╔═╡ Cell order:

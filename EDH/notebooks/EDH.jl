@@ -1,5 +1,5 @@
 ### A Pluto.jl notebook ###
-# v0.12.20
+# v0.12.21
 
 using Markdown
 using InteractiveUtils
@@ -25,13 +25,7 @@ end;
 
 # ╔═╡ 1a6beb1e-4b6f-11eb-2a42-5f72fd775375
 begin
-	using Pkg
-	Pkg.activate(mktempdir())
-	Pkg.add([
-		"Colors",
-		"Serialization",
-		"https://github.com/dustyirwin/GameZero.jl",
-		"https://github.com/dustyirwin/PlaymatSimulator"])
+	@quickactivate
 
     using Colors
 	using GameZero
@@ -39,6 +33,8 @@ begin
     using PlaymatSimulator
 
 	import PlaymatSimulator.Actors.Image
+
+	pd = projectdir()
 
 	md"""
 	## Elder Dragon Highlander aka Commander
@@ -49,24 +45,30 @@ end
 
 # ╔═╡ ac928f18-4e0b-11eb-1228-efffa1646e24
 
+
 # ╔═╡ 2d5304e4-4e2e-11eb-1856-a594b65b33a1
 begin
-	GAME_DIR = USER_SETTINGS[:GAME_DIR]
+	USER_SETTINGS = deserialize("tmp/user_selection.jls")
+	GAME_NAME = USER_SETTINGS[:GAME_NAME]
 	DECK_NAME = USER_SETTINGS[:DECK_NAME]
 end
 
 # ╔═╡ ac00106c-4bff-11eb-29db-b1f869ba2c70
-begin
-	game_include("$GAME_DIR/../Base/notebooks/Base.jl")
-	game_include("$GAME_DIR/../Base/notebooks/game_settings.jl")
-	game_include("$GAME_DIR/../Base/notebooks/game_rules.jl")
-	game_include("$GAME_DIR/notebooks/game_state.jl")
-end
+game_include("$pd/Base/notebooks/Base.jl")
+
+# ╔═╡ 5c4fbaf4-854b-11eb-070f-affe01d25ca4
+game_include("$pd/Base/notebooks/game_settings.jl")
+
+# ╔═╡ 60c88516-854b-11eb-1c66-df73b9b6181a
+game_include("$pd/Base/notebooks/game_rules.jl")
+
+# ╔═╡ 62e19680-854b-11eb-2559-2bad48989589
+game_include("$pd/$GAME_NAME/notebooks/game_state.jl")
 
 # ╔═╡ 1e72fb94-4c0a-11eb-1186-e717e9acc1e6
 begin
 	merge!(gs, USER_SETTINGS)
-	deck = deserialize("$GAME_DIR/decks/$DECK_NAME/$DECK_NAME.jls")
+	deck = deserialize("$pd/$GAME_NAME/decks/$DECK_NAME/$DECK_NAME.jls")
 	gs[:deck] = deck
 end
 
@@ -81,6 +83,8 @@ begin  # required GameZero variables
 	SCREEN_HEIGHT = gs[:SCREEN_HEIGHT]
 	SCREEN_WIDTH = gs[:SCREEN_WIDTH]
 	BACKGROUND = gs[:BACKGROUND]
+
+	SimpleDirectMediaLayer.ShowCursor(Int32(0))  # hides system mouse cursor
 end
 
 # ╔═╡ Cell order:
@@ -89,6 +93,9 @@ end
 # ╟─ac928f18-4e0b-11eb-1228-efffa1646e24
 # ╟─2d5304e4-4e2e-11eb-1856-a594b65b33a1
 # ╠═ac00106c-4bff-11eb-29db-b1f869ba2c70
+# ╠═5c4fbaf4-854b-11eb-070f-affe01d25ca4
+# ╠═60c88516-854b-11eb-1c66-df73b9b6181a
+# ╠═62e19680-854b-11eb-2559-2bad48989589
 # ╟─1e72fb94-4c0a-11eb-1186-e717e9acc1e6
 # ╠═c811ed82-4c09-11eb-3506-9b30dae8eaa6
 # ╠═0146b240-4c0a-11eb-371c-19ef327394c7

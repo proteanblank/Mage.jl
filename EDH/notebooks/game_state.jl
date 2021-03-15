@@ -29,15 +29,14 @@ begin
 
 	using GameZero
 	using Random
-    using DataStructures
     using Serialization
 	using PlaymatSimulator
 	import PlaymatSimulator.Actors.Image
 	import PlaymatSimulator.Actors.GIF
 
 
-	US = deserialize("$(projectdir())/tmp/user_selection.jls")
-	GAME_DIR = US[:GAME_DIR]
+	pd = projectdir()
+	US = deserialize("$pd/tmp/user_selection.jls")
 
 	md"""
 	## EDH GAME STATE
@@ -46,10 +45,10 @@ begin
 end
 
 # ╔═╡ ebd61216-4da3-11eb-2e77-5900d3980b8e
-STAGE = game_include("$GAME_DIR/../Base/notebooks/game_stage.jl")
+STAGE = game_include("$pd/Base/notebooks/game_stage.jl")
 
 # ╔═╡ f1e8642e-4da3-11eb-26bc-234df79ed8a6
-GS = game_include("$GAME_DIR/../Base/notebooks/game_settings.jl")
+GS = game_include("$pd/Base/notebooks/game_settings.jl")
 
 # ╔═╡ 2e97f2d2-4c1d-11eb-23d5-3fc9bcd4bc47
 SCREEN_WIDTH = Int32(1080)
@@ -63,15 +62,14 @@ SCREEN_HEIGHT = Int32(1920)
 # ╔═╡ 22163bfc-3932-11eb-37cc-0701ba61483e
 const gs = Dict{Symbol,Any}(
 	:GAME_NAME => "EDH",
-    :GAME_DIR => GAME_DIR,
 	:MOUSE_POS => Int32[0,0],
     :MOUSE_OFFSETS => [ Int32[0,0] ],
-	:music => readdir("$GAME_DIR/../Base/music"),
+	:music => readdir("$pd/Base/music"),
 	:ui => OrderedDict(
 		:cursor_icon => Image("mouse_cursor_icon",
-			load("$GAME_DIR/../Base/ui/icons/RavenmoreIconPack/64/swordWood.png")),
+			load("$pd/Base/ui/icons/RavenmoreIconPack/64/swordWood.png")),
         :cursor => Image("mouse_cursor",
-			load("$GAME_DIR/../Base/ui/zones/area_wht.png"), alpha=0, w=1, h=1),
+			load("$pd/Base/ui/zones/area_wht.png"), alpha=0, w=1, h=1),
 		),
     :stage => STAGE,
 	:resources => Dict{Symbol,Any}(
@@ -88,40 +86,40 @@ const gs = Dict{Symbol,Any}(
         ),
 	:resource_spinners => OrderedDict{Symbol,Actor}(
         :life => Text("40:L ",
-            "$GAME_DIR/../Base/fonts/OpenSans-Semibold.ttf",
+            "$pd/Base/fonts/OpenSans-Semibold.ttf",
             ),
         :white_mana => Text(" 0:W ",
-            "$GAME_DIR/../Base/fonts/OpenSans-Semibold.ttf", font_color = [255,255,255,255]
+            "$pd/Base/fonts/OpenSans-Semibold.ttf", font_color = [255,255,255,255]
             ),
         :blue_mana => Text(" 0:U ",
-            "$GAME_DIR/../Base/fonts/OpenSans-Semibold.ttf", font_color = [0,0,255,255]
+            "$pd/Base/fonts/OpenSans-Semibold.ttf", font_color = [0,0,255,255]
             ),
         :black_mana => Text(" 0:B ",
-            "$GAME_DIR/../Base/fonts/OpenSans-Semibold.ttf", font_color = [0,0,0,255]
+            "$pd/Base/fonts/OpenSans-Semibold.ttf", font_color = [0,0,0,255]
             ),
         :red_mana => Text(" 0:R ",
-            "$GAME_DIR/../Base/fonts/OpenSans-Semibold.ttf", font_color = [255,0,0,255]
+            "$pd/Base/fonts/OpenSans-Semibold.ttf", font_color = [255,0,0,255]
             ),
         :green_mana => Text(" 0:G ",
-            "$GAME_DIR/../Base/fonts/OpenSans-Semibold.ttf", font_color = [0,255,0,255]
+            "$pd/Base/fonts/OpenSans-Semibold.ttf", font_color = [0,255,0,255]
             ),
         :colorless_mana => Text(" 0:C ",
-            "$GAME_DIR/../Base/fonts/OpenSans-Semibold.ttf", font_color = [125,125,125,255]
+            "$pd/Base/fonts/OpenSans-Semibold.ttf", font_color = [125,125,125,255]
             ),
         :energy => Text(" 0:E ",
-            "$GAME_DIR/../Base/fonts/OpenSans-Semibold.ttf",
+            "$pd/Base/fonts/OpenSans-Semibold.ttf",
             ),
         :poison => Text(" 0:P ",
-            "$GAME_DIR/../Base/fonts/OpenSans-Semibold.ttf", font_color = [255,0,255,255]
+            "$pd/Base/fonts/OpenSans-Semibold.ttf", font_color = [255,0,255,255]
             ),
         ),
     :sfx => OrderedDict(
         :shade_wht=>Image("shade_wht",
-			load("$GAME_DIR/../Base/ui/zones/area_wht.png")),
+			load("$pd/Base/ui/zones/area_wht.png")),
         :shade_blk=>Image("shade_blk",
-			load("$GAME_DIR/../Base/ui/zones/area_blk.png")),
+			load("$pd/Base/ui/zones/area_blk.png")),
 		:sel_box => Image("sel_box",
-			load("$GAME_DIR/../Base/ui/zones/area_wht.png"), alpha=35, w=0, h=0),
+			load("$pd/Base/ui/zones/area_wht.png"), alpha=35, w=0, h=0),
         ),
     :overlay => OrderedDict(
         :texts => Actor[],

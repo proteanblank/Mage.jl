@@ -21,9 +21,9 @@ begin
 	@quickactivate
 
 	using Colors
-	using Images
 	using PlutoUI
 	using Serialization
+	using PlaymatSimulator
 
 	md"""
 	## BASIC MtG GAME SETTINGS
@@ -35,8 +35,7 @@ end
 
 # ╔═╡ 52c3d32e-4e2f-11eb-20f7-4d61ff865e75
 begin
-	US = deserialize("$(projectdir())/tmp/user_selection.jls")
-	GAME_DIR = US[:GAME_DIR]
+	US = deserialize("tmp/user_selection.jls")
 end
 
 # ╔═╡ 3ffcf8a4-385b-11eb-25da-fd9bfc189e06
@@ -60,7 +59,7 @@ $(SCREEN_BORDER = Int32( 10 )) pixels
 # ╔═╡ a913a358-3930-11eb-104b-a1e5b1b9091c
 md"""
 `DEFAULT_FONT:`
-$(DEFAULT_FONT = "../fonts/OpenSans-Regular.ttf")
+$(DEFAULT_FONT = "Base/fonts/OpenSans-Regular.ttf")
 """
 
 # ╔═╡ 2936eba6-3942-11eb-14ec-05cab84f472d
@@ -71,7 +70,7 @@ $(MAX_FPS = Int32( 60 )) *inactive
 
 # ╔═╡ 3fe53d58-4d9c-11eb-11c3-1f1ea0505f98
 begin
-	BKG_NAMES = [ f=>f for f in readdir("$GAME_DIR/../Base/ui/backgrounds") ]
+	BKG_NAMES = [ f=>f for f in readdir("Base/ui/backgrounds") ]
 
 	md"""
 	`BKG_NAMES:`
@@ -80,7 +79,7 @@ begin
 end
 
 # ╔═╡ 089d469c-4da1-11eb-2c82-6132328b548c
-BKG_PATH = "$GAME_DIR/../Base/ui/backgrounds/$BKG_NAME"
+BKG_PATH = "Base/ui/backgrounds/$BKG_NAME"
 
 # ╔═╡ 2b99d0d8-4d9d-11eb-3f90-2fd6c50a9fa8
 BACKGROUND_IMG = LocalResource(BKG_PATH)

@@ -7,7 +7,7 @@ using Pluto
 
 function real_main()
     Pluto.run(
-        notebook="Welcome.jl",
+        notebook="Mage.jl",
         workspace_use_distributed=false,
         port=8001
     )

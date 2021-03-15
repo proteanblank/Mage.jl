@@ -387,7 +387,9 @@ version = "0.53.0+0"
 
 [[GameZero]]
 deps = ["Colors", "Random", "SimpleDirectMediaLayer"]
-git-tree-sha1 = "687daee1522d6457e297da5f4d19802da593ae27"
+git-tree-sha1 = "d42d0fe76b4e5ac70ffbd21aa4f6e23fa2e45026"
+repo-rev = "master"
+repo-url = "https://github.com/dustyirwin/GameZero.jl"
 uuid = "9da27670-f782-11e9-1da1-f53579315bfe"
 version = "0.1.3"
 
@@ -923,8 +925,8 @@ uuid = "eebad327-c553-4316-9ea0-9fa01ccd7688"
 version = "0.1.1"
 
 [[PlaymatSimulator]]
-deps = ["Colors", "DataStructures", "Dates", "DrWatson", "Flux", "GameZero", "HTTP", "ImageFiltering", "ImageIO", "ImageMagick", "ImageTransformations", "Images", "JSON", "Logging", "PackageCompiler", "Pkg", "Plots", "Pluto", "PlutoUI", "Random", "Revise", "Rotations", "SHA", "Serialization", "ShiftedArrays", "SimpleDirectMediaLayer", "Statistics"]
-git-tree-sha1 = "05e3a4af57881bda7b0798367c0555d096040669"
+deps = ["Colors", "DataStructures", "Dates", "DrWatson", "Flux", "GameZero", "HTTP", "ImageFiltering", "ImageIO", "ImageMagick", "ImageTransformations", "Images", "JSON", "Logging", "PackageCompiler", "Pkg", "Plots", "Pluto", "PlutoUI", "Random", "Reexport", "Revise", "Rotations", "SHA", "Serialization", "ShiftedArrays", "SimpleDirectMediaLayer", "Statistics"]
+git-tree-sha1 = "95f8918b148d249531933c896e103edd461367f7"
 repo-rev = "main"
 repo-url = "https://github.com/dustyirwin/PlaymatSimulator"
 uuid = "e5f19dc6-78e9-41ab-ba95-fec0547b5fb9"
