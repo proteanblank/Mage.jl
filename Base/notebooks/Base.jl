@@ -290,8 +290,9 @@ function on_mouse_down(g::Game, pos::Tuple, button::GameZero.MouseButtons.MouseB
 	@show length(ib)
 
     if button == GameZero.MouseButtons.LEFT
-		if !isempty(gs[:group][:selected])
 
+		if !isempty(gs[:group][:selected])
+			# same code is on_mouse_up... TODO: wrap up into own func?
 			for a in gs[:group][:selected]
 				zone = zone_check(a, gs)
 
@@ -498,7 +499,7 @@ function on_mouse_down(g::Game, pos::Tuple, button::GameZero.MouseButtons.MouseB
                 )
 
 			else
-            	ib[end].angle = ib[end].angle == 0 ? 90 : 0
+            	ib[end].angle = ib[end].angle == 0 ? 270 : 0
             end
 
 		elseif isempty(ib)

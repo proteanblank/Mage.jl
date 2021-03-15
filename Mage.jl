@@ -28,17 +28,16 @@ begin
 
 
 	md"""
-	# Welcome to Mage.jl!
+	# 🧙 Welcome to Mage.jl
 	#### Choose a game variant below to get started ☮
 	"""
 end
 
-# ╔═╡ 63b7dc70-839f-11eb-0701-4389ed6b3380
-md"""PlaymatSimulator game direcory: $(@bind GAME_DIR TextField(default="/home/dusty/Shared/PlaymatProjects/PlaymatGames/Mage.jl"))"""
-
 # ╔═╡ 65e7c338-4b42-11eb-014a-017404d2040a
 begin
-	GAMES = [ gn=>gn for gn in readdir(GAME_DIR) if !(occursin(".", gn)) ]
+	GAMES = ["EDH"=>"EDH"]
+	#[ gn=>gn for gn in readdir(GAME_DIR) if !(occursin(".", gn)) ]
+	
 	pushfirst!(GAMES,""=>"")
 
 	md"""
@@ -48,7 +47,7 @@ end
 
 # ╔═╡ e86a6936-4b43-11eb-33b9-3ddefed762c7
 if GAME_NAME != ""
-	DECKS = [ gn=>gn for gn in readdir("$GAME_DIR/$GAME_NAME/decks") if !(occursin(".", gn)) ]
+	DECKS = [ gn=>gn for gn in readdir("$GAME_NAME/decks") if !(occursin(".", gn)) ]
 	pushfirst!(DECKS,""=>"")
 
 	md"""
@@ -91,12 +90,11 @@ html"""<br><br><br><br><br><br>"""
 
 # ╔═╡ Cell order:
 # ╟─e90001ca-4b3f-11eb-0ccd-7785902a32e3
-# ╠═6e33e012-4b3d-11eb-30ea-2b5f82c16b8e
-# ╟─63b7dc70-839f-11eb-0701-4389ed6b3380
+# ╟─6e33e012-4b3d-11eb-30ea-2b5f82c16b8e
 # ╟─65e7c338-4b42-11eb-014a-017404d2040a
 # ╟─e86a6936-4b43-11eb-33b9-3ddefed762c7
-# ╠═eb1a3e94-4cca-11eb-2b39-a5794006c375
-# ╠═e11fc3c8-4b44-11eb-0c25-3d787ef9da0a
-# ╠═a6cc0f5c-4cab-11eb-10d1-b351e17004e3
+# ╟─eb1a3e94-4cca-11eb-2b39-a5794006c375
+# ╟─e11fc3c8-4b44-11eb-0c25-3d787ef9da0a
+# ╟─a6cc0f5c-4cab-11eb-10d1-b351e17004e3
 # ╟─386f2d76-4ef1-11eb-032b-1715050b4952
 # ╟─1816db80-4b62-11eb-0a61-91f0662ae287
