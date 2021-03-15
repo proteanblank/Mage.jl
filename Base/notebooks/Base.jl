@@ -290,8 +290,48 @@ function on_mouse_down(g::Game, pos::Tuple, button::GameZero.MouseButtons.MouseB
 	@show length(ib)
 
     if button == GameZero.MouseButtons.LEFT
+		if !isempty(gs[:group][:selected])
 
-		if isempty(ib)
+			for a in gs[:group][:selected]
+				zone = zone_check(a, gs)
+
+                if zone !== nothing
+
+					for (i,c) in enumerate(gs[:ALL_CARDS])
+
+						if haskey(a.data, :parent_id) && a.data[:parent_id] == c.id
+							c = popat!(gs[:ALL_CARDS], i)
+							filter!.(x->x!=c, [ values(gs[:zone])... ])
+							g.keyboard.LCTRL || g.keyboard.RCTRL ? pushfirst!(gs[:zone][zone], c) : push!(gs[:zone][zone], c)
+							push!(gs[:ALL_CARDS], c)
+						end
+					end
+
+					AN.update_text_actor!(gs[:texts][:deck_info],
+		                "Library: $(length(gs[:zone]["Library"]))")
+		            AN.update_text_actor!(gs[:texts][:hand_info],
+		                "Hand: $(length(gs[:zone]["Hand"]))")
+		            AN.update_text_actor!(gs[:texts][:graveyard_info],
+		                "Graveyard: $(length(gs[:zone]["Graveyard"]))")
+		            AN.update_text_actor!(gs[:texts][:command_info],
+		                "Command / Exile: $(length(gs[:zone]["Command"]))")
+		            AN.update_text_actor!(gs[:texts][:battlefield_info],
+		                "Battlefield: $(length(gs[:zone]["Battlefield"]))")
+
+					filter!(x->x!==a, gs[:group][:clickables])
+					a.x = round_to(30, a.x)  # snap in x
+					a.y = round_to(30, a.y)  # snap in y
+					a.scale = [1, 1]
+
+				else
+					a.scale = [1, 1]
+				end
+			end
+
+			push!(gs[:group][:clickables], gs[:group][:selected]...)
+			gs[:group][:selected] = []
+
+		elseif isempty(ib)
 
 			if isempty(gs[:overlay][:shades])
 	            gs[:sfx][:sel_box].x = gs[:MOUSE_POS][1]
