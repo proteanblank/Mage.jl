@@ -1,5 +1,5 @@
 ### A Pluto.jl notebook ###
-# v0.12.20
+# v0.12.21
 
 using Markdown
 using InteractiveUtils
@@ -14,7 +14,15 @@ macro bind(def, element)
 end
 
 # ╔═╡ c7952ee6-45b5-11eb-1158-5bb2ff274ce9
-using DrWatson
+begin
+	using DrWatson
+	
+		md"""
+	*mtg_cards loaded from JSON*
+
+	## EDH Deck: Vannifar's Circus 
+	"""
+end
 
 # ╔═╡ 0c145632-3927-11eb-19b9-877e05c1bcdc
 begin
@@ -27,21 +35,16 @@ begin
 	using PlutoUI
 	using Serialization
 	using PlaymatSimulator
-	using DataStructures
+	#using DataStructures
 	using ImageTransformations: imresize
 
 	AC = PlaymatSimulator.Actors
 	
-	mtg_cards = JSON.parsefile("$(projectdir())/games/MtG/MtG.jl/json/oracle-cards-20201224220555.json")
-
-	md"""
-	*mtg_cards loaded from JSON*
-
-	## MtG EDH Deck: Vannifar's Circus (UG Creature Ramp Combo) by Dustin Irwin
-	For simple games, a "deck" in PlaymatSimulator is simply a collection of images, one for each card in the deck. Let's build an example EDH deck `Vannifar's Circus`.
-
-	To get started, define a `deck` Dict object below of type Dict{String,Int} where the key is the official card name and the value is the quantity of that card in the deck.
-	"""
+	pd = projectdir()
+	
+	mtg_cards = JSON.parsefile("$pd/Base/json/oracle-cards-20201224220555.json")
+	
+	md"**Found $(length(mtg_cards)) cards in JSON db!**"
 end
 
 # ╔═╡ 621b08a4-384e-11eb-0109-61e9b9ecf125
@@ -164,16 +167,6 @@ length(deck[:card_names])
 # ╔═╡ c61fa79e-4583-11eb-3b71-2d334aca843d
 md"""
 Look OK? Keep in mind that images that do not require in-game scaling will suffer less distortion.
-
-Alright, lets load up a JSON file with the URIs we need to grab the card images. For MtG, we can use the .json file available here: TODO
-
-Save the json file to the /json directory in the MtG project directory and modify the following cell to point at the json file.
-
-##### MtG database loaded! Found $(length(mtg_cards)) unique cards (by name).
-
-mtg_cards is of type Array{Any}. The dicts contained within are of type Dict{String,Any}.
-
-Alrighty, let's collect the data we need to download the card images:
 """
 
 # ╔═╡ 7420cf10-45cc-11eb-2780-4f320bd8a2cf
@@ -191,7 +184,7 @@ begin
 	end
 
 	md"""
-	Found $(length(cards)) matching cards in mtg_cards!
+	**Found $(length(cards)) matching cards in mtg_cards!**
 	"""
 end
 
@@ -291,9 +284,6 @@ function search_mtg_cards_by_keyword(q::String, mtg_cards::Array)
 	[ n for n in [ c["name"] for c in mtg_cards ] if occursin(q, n) ]
 end
 
-# ╔═╡ cec924ac-50c7-11eb-3795-85b3c183a8eb
-search_mtg_cards_by_keyword("Jwari", mtg_cards)
-
 # ╔═╡ 7cbdfda6-5eb5-11eb-2be6-0f93c3374a47
 function hbox(x, y, gap=16; sy=size(y), sx=size(x))
 	w,h = (max(sx[1], sy[1]),
@@ -307,7 +297,7 @@ end
 
 # ╔═╡ 5f7ebd78-3db7-11eb-0690-1b8ee4ebe7db
 begin
-	CARD_BACK_PATH = "$(projectdir())/games/MtG/MtG.jl/ui/cards/card_back.png"
+	CARD_BACK_PATH = "$pd/Base/ui/cards/card_back.png"
 	CARD_BACK_IMG = imresize(load(CARD_BACK_PATH), ratio=card_ratio)
 	
 	hbox(CARD_BACK_IMG, CARD_BACK_IMG)
@@ -330,10 +320,9 @@ vbox(x,y, gap=16) = hbox(x', y')'
 # ╔═╡ Cell order:
 # ╟─c7952ee6-45b5-11eb-1158-5bb2ff274ce9
 # ╟─0c145632-3927-11eb-19b9-877e05c1bcdc
-# ╠═cec924ac-50c7-11eb-3795-85b3c183a8eb
 # ╟─621b08a4-384e-11eb-0109-61e9b9ecf125
 # ╟─fb61d01c-458d-11eb-2c2a-f711dc7ab7f4
-# ╠═5f7ebd78-3db7-11eb-0690-1b8ee4ebe7db
+# ╟─5f7ebd78-3db7-11eb-0690-1b8ee4ebe7db
 # ╟─c61fa79e-4583-11eb-3b71-2d334aca843d
 # ╟─7420cf10-45cc-11eb-2780-4f320bd8a2cf
 # ╟─c31dd202-50c6-11eb-0631-13c70535635e
