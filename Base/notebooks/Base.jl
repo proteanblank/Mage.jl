@@ -610,7 +610,7 @@ end
 # ╔═╡ 6159d724-468e-11eb-05fb-db68237e3fa0
 function on_key_down(g::Game, key, keymod)
     global gs
-	DECK_NAME = gs[:deck]
+	DECK_NAME = gs[:DECK_NAME]
 
     ib = in_bounds(gs)
 
@@ -718,10 +718,10 @@ function on_key_down(g::Game, key, keymod)
     elseif key == Keys.DELETE
         if !isempty(gs[:group][:selected])
             kill_card!.(gs[:group][:selected])
-            play_sound("Base/sounds/wilhelm.mp3")
+            # play_sound("$pd/Base/sounds/wilhelm.mp3")
         elseif !isempty(ib)
             kill_card!(ib[end])
-            play_sound("Base/sounds/wilhelm.mp3")
+            # play_sound("$pd/Base/sounds/wilhelm.mp3")
         end
 
     elseif key == Keys.TAB
@@ -791,13 +791,13 @@ function on_key_down(g::Game, key, keymod)
                 )
             end
         end
-        play_sound("Base/sounds/splay_actors.mp3")
+        # play_sound("$pd/Base/sounds/splay_actors.mp3")
 
     elseif key == Keys.BACKQUOTE
         try
             if "terminal.jls" in readdir("tmp")
-                @show eval(g.game_module, Meta.parse(deserialize("tmp/terminal.jls")))
-                rm("tmp/terminal.jls")
+                @show eval(g.game_module, Meta.parse(deserialize("$pd/tmp/terminal.jls")))
+                rm("$pd/tmp/terminal.jls")
             end
         catch e
             @warn e
