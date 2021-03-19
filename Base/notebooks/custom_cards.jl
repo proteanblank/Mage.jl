@@ -26,8 +26,13 @@ begin
 	using ImageFiltering
 	using ImageTransformations
 
-	DECK_DIR = "$(projectdir())/games/MtG/EDH/decks/Vannifar's Circus"
-	
+	const pd = projectdir()
+
+	US = deserialize("$pd/tmp/user_selection.jls")
+	GAME_NAME = US[:GAME_NAME]
+	DECK_NAME = US[:DECK_NAME]
+	DECK_dir = "$pd/$GAME_NAME/decks/$DECK_NAME"
+
 	md"""
 	### Vannifar's Circus Custom Cards
 	"""
@@ -47,10 +52,10 @@ md"""
 # ╔═╡ 2f5a332c-56c4-11eb-259b-8b7d51af1b04
 begin
 	custom_card_faces = [ fn => load("$DECK_DIR/custom_images/$fn") for fn in readdir("$DECK_DIR/custom_images") if !occursin(split(fn,".")[begin], join(deck[:commander_names])) && (occursin("png", fn) || occursin("gif",fn))  ]
-	
+
 	card_names = [ k for (k,v) in custom_card_faces ]
 	card_imgs = [ v for (k,v) in custom_card_faces ]
-	
+
 	for i in 1:length(card_imgs)
 		csz = size(card_imgs[i])
 		rat = csz[1] / csz[2]
@@ -80,19 +85,19 @@ md"""
 """
 
 # ╔═╡ e010eb3a-597a-11eb-19da-01375b1d8367
-if swap_card_face		
-	deck[:CARD_FACES][ card_info[3] ] = 
+if swap_card_face
+	deck[:CARD_FACES][ card_info[3] ] =
 	card_names[card_index] => [ card_imgs[card_index] ]
 end
 
 # ╔═╡ 7d1f5e08-5ba0-11eb-008c-87a8474352cd
 begin
 	commander_faces = [ fn => load("$DECK_DIR/custom_images/$fn") for fn in readdir("$DECK_DIR/custom_images") if occursin(split(fn,".")[begin], join(deck[:commander_names])) && (occursin("png", fn) || occursin("gif", fn))  ]
-	
+
 	commander_names = [ k for (k,v) in commander_faces ]
-	
+
 	commander_imgs = [ v for (k,v) in commander_faces ]
-	
+
 	for i in 1:length(commander_imgs)
 		csz = size(commander_imgs[i])
 		rat = csz[1] / csz[2]

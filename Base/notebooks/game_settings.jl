@@ -14,7 +14,15 @@ macro bind(def, element)
 end
 
 # ╔═╡ 67d98a4a-4da0-11eb-3ff8-db5e68b54f8d
-using DrWatson
+begin
+	using DrWatson
+
+	md"""
+	## BASIC MtG GAME SETTINGS
+
+	#### Edit the elements below to modify basic game options.
+	"""
+end
 
 # ╔═╡ c656c348-3852-11eb-2806-0df5baa0d2e1
 begin
@@ -25,52 +33,36 @@ begin
 	using Serialization
 	using PlaymatSimulator
 
-	md"""
-	## BASIC MtG GAME SETTINGS
-
-	#### Edit the elements below to modify basic game options.
-	"""
+	pd = projectdir()
 end
-
 
 # ╔═╡ 52c3d32e-4e2f-11eb-20f7-4d61ff865e75
-begin
-	US = deserialize("tmp/user_selection.jls")
-end
+US = deserialize("$pd/tmp/user_selection.jls")
 
 # ╔═╡ 3ffcf8a4-385b-11eb-25da-fd9bfc189e06
-md"""
-`SCREEN_WIDTH`:
-$(SCREEN_WIDTH = Int32( 1920 )) pixels
-"""
+# length in pixels
+const SCREEN_WIDTH = Int32(1920)
 
 # ╔═╡ 519b147e-385b-11eb-30ef-9354da78c3b2
-md"""
-`SCREEN_HEIGHT:`
-$(SCREEN_HEIGHT = Int32( 1080 )) pixels
-"""
+# length in pixels
+const SCREEN_HEIGHT = Int32(1080)
 
 # ╔═╡ 731afc68-385b-11eb-1084-1f85f3b05ed0
-md"""
-`SCREEN_BORDER:`
-$(SCREEN_BORDER = Int32( 10 )) pixels
-"""
+# length in pixels
+const SCREEN_BORDER = Int32(10)
 
 # ╔═╡ a913a358-3930-11eb-104b-a1e5b1b9091c
-md"""
-`DEFAULT_FONT:`
-$(DEFAULT_FONT = "Base/fonts/OpenSans-Regular.ttf")
-"""
+# length in pixels
+const DEFAULT_FONT = "Base/fonts/OpenSans-Regular.ttf"
 
 # ╔═╡ 2936eba6-3942-11eb-14ec-05cab84f472d
-md"""
-`MAX_FPS:`
-$(MAX_FPS = Int32( 60 )) *inactive
-"""
+# max FPS
+const MAX_FPS = Int32(60)
+
 
 # ╔═╡ 3fe53d58-4d9c-11eb-11c3-1f1ea0505f98
 begin
-	BKG_NAMES = [ f=>f for f in readdir("Base/ui/backgrounds") ]
+	BKG_NAMES = [ f=>f for f in readdir("$pd/Base/ui/backgrounds") ]
 
 	md"""
 	`BKG_NAMES:`

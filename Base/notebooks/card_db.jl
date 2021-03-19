@@ -19,16 +19,16 @@ using DrWatson
 # ╔═╡ dc35a05c-3907-11eb-27ee-35fa47c0d2f3
 begin
 	@quickactivate
-	
+
 	using GameZero
 	using HTTP
 	using JSON
 	using Plots
 	using Images
 	using PlutoUI
-	
+
 	plotly()
-	
+
 	function ingredients(path::String)
 		# this is from the Julia source code (evalfile in base/loading.jl)
 		# but with the modification that it returns the module instead of the last object
@@ -42,17 +42,18 @@ begin
 				 :(include($path))))
 		m
 	end
-	
+
 	function get_card_img(img_uri::String)
 		img_resp = HTTP.get(img_uri)
 		card_img = img_resp.body |> IOBuffer |> load
 	end
-	
-	JSON_DIR = "$(projectdir())/games/MtG/MtG.jl/json"
+
+	const pd = projectdir()
+	JSON_DIR = "$pd/games/MtG/MtG.jl/json"
 	DATA_FILES = readdir(JSON_DIR)
 	DATA_FILE = DATA_FILES[end]
 	CARD_DATA = JSON.parsefile("$JSON_DIR/$DATA_FILE")
-	
+
 	md"""
 	## MtG Database
 

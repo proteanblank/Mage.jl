@@ -16,8 +16,6 @@ begin
 
 	import PlaymatSimulator.Actors.Image
 
-	pd = projectdir()
-
 	US = deserialize("$pd/tmp/user_selection.jls")
 	GS = ingredients("$pd/Base/notebooks/game_settings.jl")
 
@@ -33,10 +31,10 @@ begin
 end
 
 # ╔═╡ fdf59b16-4da2-11eb-204f-0d0e1a522f6c
-SHADE_PATH = "$pd/Base/ui/zones/area_blk.png"
+const SHADE_PATH = "$pd/Base/ui/zones/area_blk.png"
 
 # ╔═╡ a2195ae4-4da2-11eb-2112-e54a53878565
-zone_shade = load(SHADE_PATH)
+const zone_shade = load(SHADE_PATH)
 
 # ╔═╡ 235edb4c-38fe-11eb-3112-bde291f6f5b5
 begin

@@ -34,7 +34,7 @@ begin
 
 	import PlaymatSimulator.Actors.Image
 
-	pd = projectdir()
+	const pd = projectdir()
 
 	md"""
 	## Elder Dragon Highlander aka Commander
@@ -43,14 +43,11 @@ begin
 	"""
 end
 
-# ╔═╡ ac928f18-4e0b-11eb-1228-efffa1646e24
-
-
 # ╔═╡ 2d5304e4-4e2e-11eb-1856-a594b65b33a1
 begin
-	USER_SETTINGS = deserialize("tmp/user_selection.jls")
-	GAME_NAME = USER_SETTINGS[:GAME_NAME]
-	DECK_NAME = USER_SETTINGS[:DECK_NAME]
+	USER_SETTINGS = deserialize("$pd/tmp/user_selection.jls")
+	const GAME_NAME = USER_SETTINGS[:GAME_NAME]
+	const DECK_NAME = USER_SETTINGS[:DECK_NAME]
 end
 
 # ╔═╡ ac00106c-4bff-11eb-29db-b1f869ba2c70
@@ -80,9 +77,8 @@ reset_stage!(gs)
 
 # ╔═╡ 32229134-4cc0-11eb-2c68-d11134987c56
 begin  # required GameZero variables
-	SCREEN_HEIGHT = gs[:SCREEN_HEIGHT]
-	SCREEN_WIDTH = gs[:SCREEN_WIDTH]
-	BACKGROUND = gs[:BACKGROUND]
+	const SCREEN_HEIGHT = gs[:SCREEN_HEIGHT]
+	const SCREEN_WIDTH = gs[:SCREEN_WIDTH]
 
 	SimpleDirectMediaLayer.ShowCursor(Int32(0))  # hides system mouse cursor
 end
@@ -90,8 +86,7 @@ end
 # ╔═╡ Cell order:
 # ╟─1581f9f4-4b6f-11eb-34df-cb1e958aaab6
 # ╟─1a6beb1e-4b6f-11eb-2a42-5f72fd775375
-# ╟─ac928f18-4e0b-11eb-1228-efffa1646e24
-# ╟─2d5304e4-4e2e-11eb-1856-a594b65b33a1
+# ╠═2d5304e4-4e2e-11eb-1856-a594b65b33a1
 # ╠═ac00106c-4bff-11eb-29db-b1f869ba2c70
 # ╠═5c4fbaf4-854b-11eb-070f-affe01d25ca4
 # ╠═60c88516-854b-11eb-1c66-df73b9b6181a

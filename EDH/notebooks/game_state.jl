@@ -1,5 +1,5 @@
 ### A Pluto.jl notebook ###
-# v0.12.20
+# v0.12.21
 
 using Markdown
 using InteractiveUtils
@@ -34,8 +34,6 @@ begin
 	import PlaymatSimulator.Actors.Image
 	import PlaymatSimulator.Actors.GIF
 
-
-	pd = projectdir()
 	US = deserialize("$pd/tmp/user_selection.jls")
 
 	md"""
@@ -51,16 +49,16 @@ STAGE = game_include("$pd/Base/notebooks/game_stage.jl")
 GS = game_include("$pd/Base/notebooks/game_settings.jl")
 
 # ╔═╡ 2e97f2d2-4c1d-11eb-23d5-3fc9bcd4bc47
-SCREEN_WIDTH = Int32(1080)
+#const SCREEN_WIDTH = Int32(1080)
 
 # ╔═╡ 93af0788-4c12-11eb-2c17-8ddd05dfc94d
-SCREEN_BORDER = Int32(10)
+#const SCREEN_BORDER = Int32(10)
 
 # ╔═╡ 988ca2cc-4c12-11eb-284d-f51814cbf3a3
-SCREEN_HEIGHT = Int32(1920)
+#const SCREEN_HEIGHT = Int32(1920)
 
 # ╔═╡ 22163bfc-3932-11eb-37cc-0701ba61483e
-const gs = Dict{Symbol,Any}(
+gs = Dict{Symbol,Any}(
 	:GAME_NAME => "EDH",
 	:MOUSE_POS => Int32[0,0],
     :MOUSE_OFFSETS => [ Int32[0,0] ],
@@ -135,7 +133,7 @@ const gs = Dict{Symbol,Any}(
         "Library" => Card[],
         "Hand" => Card[],
 		#"Exile" => Card[],  # replaced with Command
-		#"Stack" => Union{Card,Spell}  # not implemented
+		#"Stack" => Union{Card,Spell}[]  # not implemented
         ),
     :group => OrderedDict(
         :clickables => Actor[],
@@ -152,7 +150,7 @@ end
 
 # ╔═╡ Cell order:
 # ╟─b99805ba-3931-11eb-0e18-6ffb5497630d
-# ╠═d840fcce-3931-11eb-0d08-59ed4b60b2f9
+# ╟─d840fcce-3931-11eb-0d08-59ed4b60b2f9
 # ╠═ebd61216-4da3-11eb-2e77-5900d3980b8e
 # ╠═f1e8642e-4da3-11eb-26bc-234df79ed8a6
 # ╠═2e97f2d2-4c1d-11eb-23d5-3fc9bcd4bc47

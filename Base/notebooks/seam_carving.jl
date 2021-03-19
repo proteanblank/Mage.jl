@@ -26,13 +26,14 @@ begin
 	using Statistics
 	using Rotations
 	using Serialization
-	
-	deck_dir = "$(projectdir())/games/MtG/EDH/decks/Vannifar's Circus"
+
+	const pd = projectdir()
+	deck_dir = "$pd/games/MtG/EDH/decks/Vannifar's Circus"
 	deck = deserialize("$deck_dir/Vannifar's Circus.jls")
-	custom_imgs_dir = "$(projectdir())/games/MtG/EDH/decks/Vannifar's Circus/custom_images/"
+	custom_imgs_dir = "$pd/games/MtG/EDH/decks/Vannifar's Circus/custom_images/"
 	custom_img_names = [ fn for fn in readdir(custom_imgs_dir) if occursin("png", fn) ]
 	push!(custom_img_names, "Backside.png")
-	
+
 	md"""
 # Carve custom faces from card images! deck: $(deck[:name])
 	Setup dropdown for available decks?
@@ -60,7 +61,7 @@ end
 
 # ╔═╡ b92971e6-5d70-11eb-1713-7327a0bca668
 md"""
-#### $(@bind carve_deck_card CheckBox()) Carve cards in deck $(@bind deck_img_select Slider(1:length(deck[:CARD_FACES]), show_value=true)) 
+#### $(@bind carve_deck_card CheckBox()) Carve cards in deck $(@bind deck_img_select Slider(1:length(deck[:CARD_FACES]), show_value=true))
 """
 
 # ╔═╡ 6ff626d4-5d72-11eb-110e-49b0464e95a7
@@ -180,14 +181,14 @@ end
 function shrink!(img, min_seam, cols=true)
 	img = cols ? img : rotr90(img)
 	e = energy(img)
-	
+
 	seam_energy(seam) = sum(e[i, seam[i]] for i in 1:size(img, 1))
 	_, min_j = findmin(map(j->seam_energy(min_seam(e, j)), 1:size(e, 2)))
 	min_seam_vec = min_seam(e, min_j)
-	
+
 	img = remove_in_each_row_views(img, min_seam_vec)
 	img = cols ? img : rotl90(img)
-	
+
 	return img
 end
 
@@ -229,7 +230,7 @@ end
 # ╔═╡ 3fe076c8-5c8e-11eb-3222-ad52ddd23256
 if shrink_greedy_h
 	greedy_carved_h = shrink_n(imgs[end], hor_shrink_by, greedy_seam, show_lightning=false)
-	
+
 	md"""
 	Shrink by: $(@bind greedy_h Slider(1:hor_shrink_by, show_value=true))
 	Save changes to img? $(@bind save_h CheckBox())

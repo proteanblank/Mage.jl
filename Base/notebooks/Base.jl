@@ -106,6 +106,8 @@ function reset_stage!(gs::Dict)
 
 	gs[:zone]["Command"] = [ c for c in gs[:CARDS] if c.name in deck[:commander_names] ]
 	gs[:zone]["Library"] = shuffle(gs[:CARDS])
+	filter!(x->!(x in gs[:zone]["Command"]), gs[:zone]["Library"])
+
 	gs[:zone]["Hand"] = reverse([ pop!(gs[:zone]["Library"]) for i in 1:7 ])
 
 	for c in [ gs[:zone]["Hand"]..., gs[:zone]["Command"]... ]
@@ -190,37 +192,37 @@ function add_texts!(gs::Dict)
 
 	gs[:texts] = Dict{Symbol,Actor}()
     gs[:texts][:deck_info] = Text("Library: $(length(gs[:zone]["Library"]))",
-        "Base/fonts/OpenSans-Regular.ttf",
+        "$pd/Base/fonts/OpenSans-Regular.ttf",
         x=2SCREEN_BORDER,
         y=SCREEN_HEIGHT - 4SCREEN_BORDER,
         pt_size=22,
         )
     gs[:texts][:hand_info] = Text("Hand: $(length(gs[:zone]["Hand"]))",
-        "Base/fonts/OpenSans-Regular.ttf",
+        "$pd/Base/fonts/OpenSans-Regular.ttf",
         x=2SCREEN_BORDER,
         y=gs[:stage]["Hand"].h - 2SCREEN_BORDER,
         pt_size=22,
         )
     gs[:texts][:battlefield_info] = Text("Battlefield: $(length(gs[:zone]["Battlefield"]))",
-        "Base/fonts/OpenSans-Regular.ttf",
+        "$pd/Base/fonts/OpenSans-Regular.ttf",
         x=gs[:stage]["Hand"].w + 10SCREEN_BORDER,
         y=SCREEN_HEIGHT - 4SCREEN_BORDER,
         pt_size=22,
         )
     gs[:texts][:command_info] = Text("Command / Exile: $(length(gs[:zone]["Command"]))",
-        "Base/fonts/OpenSans-Regular.ttf",
+        "$pd/Base/fonts/OpenSans-Regular.ttf",
         x=gs[:stage]["Command"].x + SCREEN_BORDER,
         y=gs[:stage]["Command"].h - 2SCREEN_BORDER,
         pt_size=22,
         )
     gs[:texts][:graveyard_info] = Text("Graveyard: $(length(gs[:zone]["Graveyard"]))",
-        "Base/fonts/OpenSans-Regular.ttf",
+        "$pd/Base/fonts/OpenSans-Regular.ttf",
         x=gs[:stage]["Graveyard"].x + SCREEN_BORDER,
         y=SCREEN_HEIGHT - 4SCREEN_BORDER,
         pt_size=22,
         )
     gs[:texts][:welcome_text] = Text("PlaymatSimulator",
-        "Base/fonts/OpenSans-Regular.ttf",
+        "$pd/Base/fonts/OpenSans-Regular.ttf",
         x=ceil(Int32, SCREEN_WIDTH * 0.3),
         y=ceil(Int32, SCREEN_HEIGHT * 0.5),
         pt_size=85,
