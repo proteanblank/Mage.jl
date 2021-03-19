@@ -101,7 +101,7 @@ deck = if !(@isdefined deck)
 		"Jace, Wielder of Mysteries",
 		"Kraum, Ludevic's Opus",
 		"Laboratory Maniac",
-		"Lim-Dul's Vault",
+		"Lim-Dûl's Vault",
 		"Lotus Petal",
 		"Mana Confluence",
 		"Mana Crypt",
@@ -321,12 +321,12 @@ vbox(x,y, gap=16) = hbox(x', y')'
 # ╔═╡ Cell order:
 # ╟─2ffc155a-8853-11eb-0c4f-8bc96a3f08f2
 # ╟─2ffd3e94-8853-11eb-15b3-ffcb09c9661d
-# ╟─35d467ca-8853-11eb-16b5-65036e2a1f24
+# ╠═35d467ca-8853-11eb-16b5-65036e2a1f24
 # ╟─300953aa-8853-11eb-373d-f54f8766d833
 # ╟─30183ea6-8853-11eb-36b5-b7b1a2229a89
 # ╟─301d6246-8853-11eb-0e77-791a8e2a040d
 # ╟─30219d16-8853-11eb-34f9-e9ac95eea58e
-# ╟─30252f9e-8853-11eb-0129-9d151ffb5839
+# ╠═30252f9e-8853-11eb-0129-9d151ffb5839
 # ╟─302c833e-8853-11eb-0039-b116bd127ba1
 # ╟─303153aa-8853-11eb-0f16-77023647c760
 # ╟─3037a502-8853-11eb-2884-9bfb699d081e
@@ -334,7 +334,7 @@ vbox(x,y, gap=16) = hbox(x', y')'
 # ╟─3040ea2c-8853-11eb-176f-f3ef24eeebc1
 # ╟─3046ea30-8853-11eb-39b6-ff96a085c14b
 # ╟─304e1698-8853-11eb-0661-233ddd5bf224
-# ╠═30534bae-8853-11eb-181a-798130ecab86
+# ╟─30534bae-8853-11eb-181a-798130ecab86
 # ╟─305982a8-8853-11eb-3623-db4d3a2dca4c
 # ╟─305f084a-8853-11eb-1514-75e789bb1d9b
 # ╟─30657cc0-8853-11eb-1d78-8bed4b88d3a3

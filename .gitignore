@@ -15,7 +15,7 @@ trace_main.jl
 *.jpg
 *.xcf
 *.7z
-
+scrap.jl
 
 ################################################################################
 #                          DrWatson Project Structure                          #
