@@ -1,6 +1,9 @@
 # Mage.jl
 Mage.jl is a WIP Magic card game simulation engine written in pure Julia.
 
+[![Alt text](https://img.youtube.com/vi/uBhzmqyT-tE/0.jpg)](https://youtu.be/uBhzmqyT-tE)
+
+
 **Features**
 - EDH (Commander) support
 - EDH deck builder

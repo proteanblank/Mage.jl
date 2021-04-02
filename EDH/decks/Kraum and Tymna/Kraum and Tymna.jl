@@ -35,7 +35,6 @@ begin
 	using PlutoUI
 	using Serialization
 	using PlaymatSimulator
-	#using DataStructures
 	using ImageTransformations: imresize
 
 	AC = PlaymatSimulator.Actors
@@ -319,8 +318,8 @@ end
 vbox(x,y, gap=16) = hbox(x', y')'
 
 # ╔═╡ Cell order:
-# ╟─2ffc155a-8853-11eb-0c4f-8bc96a3f08f2
-# ╟─2ffd3e94-8853-11eb-15b3-ffcb09c9661d
+# ╠═2ffc155a-8853-11eb-0c4f-8bc96a3f08f2
+# ╠═2ffd3e94-8853-11eb-15b3-ffcb09c9661d
 # ╠═35d467ca-8853-11eb-16b5-65036e2a1f24
 # ╟─300953aa-8853-11eb-373d-f54f8766d833
 # ╟─30183ea6-8853-11eb-36b5-b7b1a2229a89

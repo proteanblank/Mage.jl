@@ -428,7 +428,7 @@ function on_mouse_down(g::Game, pos::Tuple, button::GameZero.MouseButtons.MouseB
 		if !isempty(gs[:group][:selected])
 
 			for a in gs[:group][:selected]
-                a.angle = a.angle == 0 ? g.keyboard.LALT ? 270 : 90 : 0
+                a.angle = a.angle == 0 ? g.keyboard.LALT ? 90 : 270 : 0
             end
 
         elseif !isempty(ib)
@@ -725,10 +725,13 @@ function on_key_down(g::Game, key, keymod)
         end
 
     elseif key == Keys.TAB
-        if g.keyboard.RSHIFT || g.keyboard.LSHIFT
-            if g.keyboard.RCTRL || g.keyboard.LCTRL
+
+		if g.keyboard.RSHIFT || g.keyboard.LSHIFT
+
+			if g.keyboard.RCTRL || g.keyboard.LCTRL
                 reset_stage!(gs)
-            else
+
+			else
 				for c in gs[:ALL_CARDS]
                 	AN.reset_actor!(c.faces[begin],
 						c.faces[begin].data[:sz][2],
@@ -745,16 +748,20 @@ function on_key_down(g::Game, key, keymod)
         end
 
     elseif key == Keys.EQUALS
-        if !isempty(gs[:group][:selected])
+
+		if !isempty(gs[:group][:selected])
             AN.grow_actor!.(gs[:group][:selected], gs[:deck][:CARD_WIDTH], gs[:deck][:CARD_HEIGHT])
-        elseif !isempty(ib)
+
+		elseif !isempty(ib)
             AN.grow_actor!(ib[end], gs[:deck][:CARD_WIDTH], gs[:deck][:CARD_HEIGHT])
         end
 
     elseif key == Keys.MINUS
-        if !isempty(gs[:group][:selected])
+
+		if !isempty(gs[:group][:selected])
             AN.shrink_actor!.(gs[:group][:selected], gs[:deck][:CARD_WIDTH], gs[:deck][:CARD_HEIGHT])
-        elseif !isempty(ib)
+
+		elseif !isempty(ib)
             AN.shrink_actor!(ib[end], gs[:deck][:CARD_WIDTH], gs[:deck][:CARD_HEIGHT])
         end
 

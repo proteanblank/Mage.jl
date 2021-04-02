@@ -34,6 +34,7 @@ begin
 	import PlaymatSimulator.Actors.Image
 	import PlaymatSimulator.Actors.GIF
 
+	pd = projectdir()
 	US = deserialize("$pd/tmp/user_selection.jls")
 
 	md"""
@@ -149,8 +150,8 @@ begin
 end
 
 # ╔═╡ Cell order:
-# ╟─b99805ba-3931-11eb-0e18-6ffb5497630d
-# ╟─d840fcce-3931-11eb-0d08-59ed4b60b2f9
+# ╠═b99805ba-3931-11eb-0e18-6ffb5497630d
+# ╠═d840fcce-3931-11eb-0d08-59ed4b60b2f9
 # ╠═ebd61216-4da3-11eb-2e77-5900d3980b8e
 # ╠═f1e8642e-4da3-11eb-26bc-234df79ed8a6
 # ╠═2e97f2d2-4c1d-11eb-23d5-3fc9bcd4bc47

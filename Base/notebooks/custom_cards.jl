@@ -1,5 +1,5 @@
 ### A Pluto.jl notebook ###
-# v0.12.18
+# v0.12.21
 
 using Markdown
 using InteractiveUtils
@@ -26,20 +26,23 @@ begin
 	using ImageFiltering
 	using ImageTransformations
 
-	const pd = projectdir()
-
-	US = deserialize("$pd/tmp/user_selection.jls")
-	GAME_NAME = US[:GAME_NAME]
-	DECK_NAME = US[:DECK_NAME]
-	DECK_dir = "$pd/$GAME_NAME/decks/$DECK_NAME"
+	pd = projectdir()
 
 	md"""
-	### Vannifar's Circus Custom Cards
+	## Custom EDH Cards
 	"""
 end
 
+# ╔═╡ 9891eb6c-88f8-11eb-261a-e5efa12c84ac
+md"""
+Mage.jl Deck directory path: $(@bind DECK_DIR TextField(default="/home/dusty/Shared/PlaymatProjects/PlaymatGames/Mage.jl/EDH/decks/Vannifar's Circus"))
+"""
+
+# ╔═╡ b28c3a68-88f8-11eb-0175-779fdb2da838
+DECK_NAME = split(DECK_DIR, '/')[end]
+
 # ╔═╡ 8a3f6140-56c4-11eb-1cea-ff327a21d57b
-deck = deserialize("$DECK_DIR/Vannifar's Circus.jls")
+deck = deserialize("$DECK_DIR/$DECK_NAME.jls")
 
 # ╔═╡ f78a72a0-5d48-11eb-198c-d742de310200
 sz = size(deck[:CARD_BACK_IMG])
@@ -90,44 +93,6 @@ if swap_card_face
 	card_names[card_index] => [ card_imgs[card_index] ]
 end
 
-# ╔═╡ 7d1f5e08-5ba0-11eb-008c-87a8474352cd
-begin
-	commander_faces = [ fn => load("$DECK_DIR/custom_images/$fn") for fn in readdir("$DECK_DIR/custom_images") if occursin(split(fn,".")[begin], join(deck[:commander_names])) && (occursin("png", fn) || occursin("gif", fn))  ]
-
-	commander_names = [ k for (k,v) in commander_faces ]
-
-	commander_imgs = [ v for (k,v) in commander_faces ]
-
-	for i in 1:length(commander_imgs)
-		csz = size(commander_imgs[i])
-		rat = csz[1] / csz[2]
-		commander_imgs[i] = imresize(commander_imgs[i], ceil(Int, sz[2]*rat*1.1), ceil(Int,sz[2]*1.1))
-	end
-end;
-
-# ╔═╡ 58eefff6-5d54-11eb-3f63-59208c7472ed
-md"""
-### Commanders
-"""
-
-# ╔═╡ 0fd7c2f8-5a13-11eb-11b7-8fa222ab3ccd
-md"""
-commander img index: $(@bind commander_index Slider(1:length(commander_imgs), show_value=true))
-"""
-
-# ╔═╡ 5a42f3ac-5b81-11eb-14e1-e18f037da064
-commander_info = [ [v,k,i,size(v[begin])] for (i,(k,v)) in enumerate(deck[:COMMANDER_FACES]) if occursin(k, commander_names[commander_index]) ][begin]
-
-# ╔═╡ 402739bc-5ac9-11eb-004a-47068d7520da
-md"""
-"Replace commander face with custom png?" $(@bind swap_commander_face CheckBox())
-"""
-
-# ╔═╡ 17a17ed0-5a15-11eb-199b-45bcc809d56c
-if swap_commander_face
-	deck[:COMMANDER_FACES][ commander_info[3] ] = deck[:commander_names][commander_index] => [ commander_imgs[commander_index] ]
-end
-
 # ╔═╡ cd27bfd0-5ba0-11eb-0bd4-559470d3907a
 md"""
 ### Custom GIFs!
@@ -160,7 +125,9 @@ end
 # ╔═╡ Cell order:
 # ╟─f313719e-56c1-11eb-0151-7fdc92bc5635
 # ╟─5d891788-56c2-11eb-1723-8361ac5bd415
-# ╠═8a3f6140-56c4-11eb-1cea-ff327a21d57b
+# ╟─9891eb6c-88f8-11eb-261a-e5efa12c84ac
+# ╟─b28c3a68-88f8-11eb-0175-779fdb2da838
+# ╟─8a3f6140-56c4-11eb-1cea-ff327a21d57b
 # ╟─f78a72a0-5d48-11eb-198c-d742de310200
 # ╟─0152ba30-5ba1-11eb-013e-8dc5191b3c17
 # ╟─2f5a332c-56c4-11eb-259b-8b7d51af1b04
@@ -170,16 +137,10 @@ end
 # ╟─08063488-5973-11eb-0fcd-97b6d199dd11
 # ╟─77ce8398-5989-11eb-2d3c-d3d0957ae270
 # ╟─e010eb3a-597a-11eb-19da-01375b1d8367
-# ╟─7d1f5e08-5ba0-11eb-008c-87a8474352cd
-# ╟─58eefff6-5d54-11eb-3f63-59208c7472ed
-# ╟─5a42f3ac-5b81-11eb-14e1-e18f037da064
-# ╟─0fd7c2f8-5a13-11eb-11b7-8fa222ab3ccd
-# ╟─402739bc-5ac9-11eb-004a-47068d7520da
-# ╟─17a17ed0-5a15-11eb-199b-45bcc809d56c
 # ╟─cd27bfd0-5ba0-11eb-0bd4-559470d3907a
 # ╟─2d187afa-598b-11eb-1dec-7b3c22ea634d
-# ╟─437c0424-56c5-11eb-29ce-7f0090186512
-# ╟─dfa2d2e8-598a-11eb-2e3a-5f9c457e5cae
-# ╟─74abf0a2-5802-11eb-3bcf-79a66eabe3e5
+# ╠═437c0424-56c5-11eb-29ce-7f0090186512
+# ╠═dfa2d2e8-598a-11eb-2e3a-5f9c457e5cae
+# ╠═74abf0a2-5802-11eb-3bcf-79a66eabe3e5
 # ╟─3c25d5f2-5ba1-11eb-0229-0fbfc8dbbf44
 # ╠═72de84ba-598d-11eb-139d-975970c19cc0

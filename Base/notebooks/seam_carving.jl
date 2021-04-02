@@ -1,5 +1,5 @@
 ### A Pluto.jl notebook ###
-# v0.12.20
+# v0.12.21
 
 using Markdown
 using InteractiveUtils
@@ -27,32 +27,37 @@ begin
 	using Rotations
 	using Serialization
 
-	const pd = projectdir()
-	deck_dir = "$pd/games/MtG/EDH/decks/Vannifar's Circus"
-	deck = deserialize("$deck_dir/Vannifar's Circus.jls")
-	custom_imgs_dir = "$pd/games/MtG/EDH/decks/Vannifar's Circus/custom_images/"
-	custom_img_names = [ fn for fn in readdir(custom_imgs_dir) if occursin("png", fn) ]
-	push!(custom_img_names, "Backside.png")
+	pd = projectdir()
+	USER_SETTINGS = deserialize("$pd/tmp/user_selection.jls")
 
 	md"""
-# Carve custom faces from card images! deck: $(deck[:name])
-	Setup dropdown for available decks?
+	# Carve custom faces for your cards!
 	"""
 end
+
+# ╔═╡ 9d2e6708-88ea-11eb-3852-5b09b6960506
+md"""
+Mage.jl Deck directory path: $(@bind DECK_DIR TextField(default="/home/dusty/Shared/PlaymatProjects/PlaymatGames/Mage.jl/EDH/decks/Vannifar's Circus"))
+"""
+
+# ╔═╡ 9d987b58-88e9-11eb-1b8b-e733e3b39391
+DECK_NAME = split(DECK_DIR, '/')[end]
+
+# ╔═╡ c0a76bea-88e9-11eb-144e-65dd27acc30b
+begin
+	custom_imgs_dir = "$DECK_DIR/custom_images/"
+	custom_img_names = [ fn for fn in readdir(custom_imgs_dir) if occursin("png", fn) ]
+	push!(custom_img_names, "Backside.png")
+	[ try load("$custom_imgs_dir/$img_fn") catch end for img_fn in custom_img_names ]
+end
+
+# ╔═╡ 8823075c-88e9-11eb-3aa1-e9a9af738720
+deck = deserialize("$DECK_DIR/$DECK_NAME.jls")
 
 # ╔═╡ b978978c-5ee0-11eb-1443-33825d99e295
 md"""
 #### $(@bind carve_custom_card CheckBox()) Carve cards in custom images dir $(@bind custom_img_select Slider(1:length(custom_img_names), show_value=true))
 """
-
-# ╔═╡ 39f36f30-5d75-11eb-137f-53e5fcb95134
-begin
-	custom_img = load("$custom_imgs_dir/$(custom_img_names[custom_img_select])")
-
-	md"""
-	Custom cards in $deck_dir
-	"""
-end
 
 # ╔═╡ c4bb34e4-5ede-11eb-0871-e16410f0c048
 if carve_custom_card
@@ -72,7 +77,10 @@ if carve_deck_card
 end
 
 # ╔═╡ 501cb384-5d73-11eb-20cb-d3b96fc930d0
-imgs = carve_deck_card ? [deck_img] : [custom_img];
+begin
+	custom_img = load("$custom_imgs_dir/$(custom_img_names[custom_img_select])")
+	imgs = carve_deck_card ? [ deck_img ] : [ custom_img ]
+end;
 
 # ╔═╡ 4c43b0ba-5ed7-11eb-3fa3-7d9b1ba5e434
 if carve_custom_card
@@ -92,25 +100,20 @@ md"""
 
 # ╔═╡ 4a156ba2-5d1b-11eb-07a5-730b3f65033f
 md"""
-#####  Export img? $(@bind export_img CheckBox())
+ **$(@bind export_img CheckBox()) Export card image to $DECK_DIR?**
 """
 
 # ╔═╡ 148ab572-5d15-11eb-2a54-89eaf1d95ca4
 if export_img
-	save("$deck_dir/mini$(randstring(5)).png", imgs[end])
+	save("$DECK_DIR/carved_$(randstring(5)).png", imgs[end])
 	if carve_deck_card
 		deck[:CARD_FACES][deck_img_select] = deck[:CARD_FACES][deck_img_select][begin] => [ imgs[end] ]
 	end
 end
 
-# ╔═╡ 2c06e12e-5d7d-11eb-0da4-c71de86166e8
-if export_img
-	serialize("$deck_dir/Vannifar's Circus.jls", deck)
-end
-
 # ╔═╡ 26ba7e48-5ecb-11eb-22f1-b5013af4ec24
 md"""
-Custom functions
+**Functions**
 """
 
 # ╔═╡ deffb654-5c8d-11eb-3138-a5c7634793bc
@@ -253,11 +256,19 @@ if (@isdefined save_h) && save_h
 	"Changes saved!"
 end
 
+# ╔═╡ 2c06e12e-5d7d-11eb-0da4-c71de86166e8
+if ((@isdefined save_v) && save_v) || ((@isdefined save_h) && save_h)
+	serialize("$DECK_DIR/$DECK_NAME.jls", deck)
+end
+
 # ╔═╡ Cell order:
 # ╟─bf40c8ca-5c8c-11eb-2e48-7b906e8e6c5e
-# ╟─1ef22dae-5c88-11eb-1276-231730d144f6
+# ╠═1ef22dae-5c88-11eb-1276-231730d144f6
+# ╠═9d2e6708-88ea-11eb-3852-5b09b6960506
+# ╠═9d987b58-88e9-11eb-1b8b-e733e3b39391
+# ╟─c0a76bea-88e9-11eb-144e-65dd27acc30b
+# ╟─8823075c-88e9-11eb-3aa1-e9a9af738720
 # ╟─501cb384-5d73-11eb-20cb-d3b96fc930d0
-# ╟─39f36f30-5d75-11eb-137f-53e5fcb95134
 # ╟─b978978c-5ee0-11eb-1443-33825d99e295
 # ╟─c4bb34e4-5ede-11eb-0871-e16410f0c048
 # ╟─4c43b0ba-5ed7-11eb-3fa3-7d9b1ba5e434
